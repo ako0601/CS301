@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bubblesort
+namespace insertionsort
 {
     class Program
     {
@@ -13,8 +13,7 @@ namespace bubblesort
         static void Main(string[] args)
         {
             int n = 0;
-            Bubble b;
-            Employee origin;
+            Insertion b;
             Employee[] employees;
             string filename;
 
@@ -29,7 +28,7 @@ namespace bubblesort
                     var sr = new StreamReader(filename);
                     n = int.Parse(sr.ReadLine());
                     employees = new Employee[n];
-                    b = new Bubble();
+                    b = new Insertion();
 
                     // reading Employee information by for loop
                     for (int i = 0; i < n; i++)
@@ -39,7 +38,7 @@ namespace bubblesort
                     }
                     sr.Close();
 
-                    b.bubble_sort(employees);
+                    b.insertion_sort(employees);
 
                     //bublesort with method    
                     StreamWriter sw = new StreamWriter("roster.txt");
@@ -85,41 +84,38 @@ namespace bubblesort
     }
 
 
-    // bubble sort
-    class Bubble
+    // insertion sort
+    class Insertion
     {
 
-        public void bubble_sort(Employee[] A)
+        public void insertion_sort(Employee[] A)
         {
-            Employee backup;
-            int compare;
+            Employee key;
+            int compare = 0;
             int exchanges = 0;
             // check the last index's value and index-1, and compare the weight and exchanges.
-            for (int i = 0; i < A.Length; i++)
+            for (int j = 1; j < A.Length; j++)
             {
-                for (int j = A.Length - 1; j > i; j--)
+                key = A[j];
+                int i = j - 1;
+                while (i >= 0 && A[i].id > key.id)
                 {
-                    if (A[j].id < A[j - 1].id)
-                    {
-                        backup = A[j];
-                        A[j] = A[j - 1];
-                        A[j - 1] = backup;
-                        exchanges++;
-                        foreach (Employee c in A)
-                        {
-                            Console.Write(c.id.ToString() + " ");
-                        }
-                        Console.WriteLine("");
-                    }
+                {
+                    A[i + 1] = A[i];
+                    compare++;
+                    exchanges++;
+                    i--;
                 }
+                A[i + 1] = key;
+                //foreach (Employee c in A)
+                //{
+                //    Console.Write(c.id.ToString() + " ");
+                //}
+                //Console.WriteLine("");
+                exchanges++;
             }
-            compare = A.Length * (A.Length - 1) / 2;
             Console.WriteLine("comparisons: " + compare);
             Console.WriteLine("exchanges: " + exchanges);
         }
     }
 }
-
-
-
-
